@@ -4,6 +4,7 @@ const { initDB } = require("./db");
 
 const authRoutes = require("./routes/auth.routes");
 const notesRoutes = require("./routes/notes.routes");
+const groupsRoutes = require("./routes/groups.routes");
 const aboutRoutes = require("./routes/about.routes");
 const openapiRoutes = require("./routes/openapi.routes");
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use(authRoutes);
 app.use("/notes", notesRoutes);
+app.use("/groups", groupsRoutes);
 app.use(aboutRoutes);
 app.use(openapiRoutes);
 

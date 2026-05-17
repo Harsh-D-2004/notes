@@ -338,6 +338,143 @@ function openapi(req, res) {
         },
       },
 
+      "/groups": {
+        get: {
+          summary: "Get all groups for the authenticated user with their notes",
+          tags: ["Groups"],
+          security: [{ bearerAuth: [] }],
+          responses: {
+            "200": {
+              description: "List of groups, each containing its full note objects",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      groups: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            id: { type: "string", format: "uuid" },
+                            name: { type: "string" },
+                            created_at: { type: "string", format: "date-time" },
+                            notes: {
+                              type: "array",
+                              items: { $ref: "#/components/schemas/Note" },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        post: {
+          summary: "Create a new group with a name and list of note IDs",
+          tags: ["Groups"],
+          security: [{ bearerAuth: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  required: ["name"],
+                  properties: {
+                    name: { type: "string" },
+                    note_ids: {
+                      type: "array",
+                      items: { type: "string", format: "uuid" },
+                      description: "IDs of notes to include — must be owned by or shared with the caller",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            "201": {
+              description: "Group created with full note objects",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      id: { type: "string", format: "uuid" },
+                      name: { type: "string" },
+                      created_at: { type: "string", format: "date-time" },
+                      notes: {
+                        type: "array",
+                        items: { $ref: "#/components/schemas/Note" },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+
+      "/groups/{id}": {
+        put: {
+          summary: "Update a group's name and note list — owner only",
+          tags: ["Groups"],
+          security: [{ bearerAuth: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string", format: "uuid" },
+            },
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  required: ["name"],
+                  properties: {
+                    name: { type: "string" },
+                    note_ids: {
+                      type: "array",
+                      items: { type: "string", format: "uuid" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            "200": {
+              description: "Updated group with full note objects",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      id: { type: "string", format: "uuid" },
+                      name: { type: "string" },
+                      created_at: { type: "string", format: "date-time" },
+                      notes: {
+                        type: "array",
+                        items: { $ref: "#/components/schemas/Note" },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+
       "/about": {
         get: {
           summary: "About this API",
