@@ -10,11 +10,11 @@ function about(req, res) {
         "Share notes by email. Shared users get read-only access via GET /notes/:id.",
       Pagination:
         "GET /notes supports page-based pagination. Fixed 10 notes per page.",
-      "Notes Groups(Custome feature)":
+      "Notes Groups(Custom feature)":
         "Owner can combine created and notes it has access to into custom groups for easy access.",
       Dockerize: "Whole server is dockerized and can be deployed easily",
       Search:
-        "Search by keyword whih can search accross notes content and notes title.",
+        "Search by keyword which can search accross notes content and notes title.",
     },
   });
 }
